@@ -1,0 +1,239 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800);
+
+body{ margin:0; padding:0; font-family: 'Open Sans', sans-serif;}
+
+header{ float:left; width:100%; margin:0; padding:30px 0 0 0;}
+header a{ float:right; margin:0 0 0 11px;}
+header button{ float:right; font-size:16px; color:#164c9a; background:#fff; border:none; border-radius:3px; padding:1px 15px; text-transform:uppercase;}
+
+.left-sectn{ float:left; padding:0;}
+.logo{ float:left; width:100%; margin:-10px 0 0 0;}
+.lft-bear-img{ float:left; margin:40px 0 0 40px; } 
+.lft-data{ float:left; width:100%; margin:0; padding:0;}
+.lft-data p{ float:left; width:90%; font-size:16px; margin:10px 0 0 0; line-height:22px; color:#05174a; font-weight:600;}
+.lft-data ul{ float:left; width:100%; margin:23px 0; padding:0;}
+.lft-data li{ float:left; width:100%; color:#1d1d1d; font-size:16px; list-style:none; margin:0 0 5px 0; font-weight:400;}
+.lft-data li span{ float:left; height:9px; width:9px; background:#00d300; margin:7px 9px 0 0;}
+.appstore-icn-big{ float:left;}
+
+.right-sectn{ float:right; padding:0;}
+.right-device-big-img{ float:right; margin:50px -16px 0 0;}
+
+footer{ float:left; width:100%; margin:65px 0 25px 0;}
+.login-signup{ float:left;}
+.login-signup a:hover{ text-decoration:none;}
+.login-signup .login-btn{ float:left; margin:0 6px 0 0; color:#fff; font-size:16px; text-transform:uppercase; background:#7d7d7d; padding:1px 15px; border-radius:3px;}
+.login-signup .signup-btn{ float:left; color:#fff; font-size:16px; background:#164c9a; padding:1px 15px; text-transform:uppercase; border-radius:3px;}
+.footer-copyright{ float:right; color:#7e7e7e; font-size:14px; margin:0 0 0 35px; font-weight:400;}
+.footer-nav{ float:right;}
+.footer-nav ul{ float:right; margin:0; padding:0;}
+.footer-nav li{ float:left; list-style:none;}
+.footer-nav li a{ float:left; font-size:14px; color:#414141; text-decoration:none; padding:0 10px; font-weight:400;}
+
+
+
+/*****************innerpage*************************************/
+.innerbody {
+    background:#ffffff!important;
+    padding-top:50px;
+}
+
+
+.innerbody .navbar-brand {
+  float: left;
+  height: 50px;
+  overflow: hidden;
+  padding: 5px 0 0;
+  width: 143px;
+}
+
+.innerbody .navbar-brand img {
+max-width: 100%;
+}
+
+.innerbody .navbar {
+  height: auto;
+  margin-bottom: 0;
+}
+
+.innerbody  .nav.navbar-nav {
+  float: right;
+}
+
+.innerbody .navbar-inverse {
+  background-color: #164c9a;
+  border-color: #164c9a;
+}
+
+.innerbody  .navbar-inverse .navbar-nav > li > a {
+  color: #fff;
+}
+
+
+.innerbody .navbar-inverse .navbar-nav > .active > a, 
+.innerbody .navbar-inverse .navbar-nav > .active > a:focus,
+.innerbody .navbar-inverse .navbar-nav > .active > a:hover {
+  background-color: #04c23a;
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a:focus, .navbar-inverse .navbar-nav > li > a:hover {
+  color: #a4ffe9!important;
+}
+
+
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all .25s ease-out;
+       -moz-transition: all .25s ease-out;
+            transition: all .25s ease-out;
+  }
+
+  .row-offcanvas-right {
+    right: 0;
+  }
+
+  .row-offcanvas-left {
+    left: 0;
+  }
+
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-right.active {
+    right: 50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left.active {
+    left: 50%; /* 6 columns */
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 50%; /* 6 columns */
+  }
+}
+
+
+.innerbody .list-group-item,
+.innerbody .list-group-item.active:
+.innerbody .list-group-item.active:hover {
+  background-color: #164c9a;
+  border-color: #164c9a;
+  color: #fff;
+  z-index: 2;
+}
+
+.modal-content {
+border: 3px solid #05174A !important;
+}
+.loginnow .modal-footer {
+float: left;
+margin-bottom: -7px;
+margin-top: 20px;
+padding: 10px 10px 0;
+width: 100%;
+}
+
+.loginnow .modal-dialog.modal-lg {
+max-width: 400px;
+}
+
+.loginnow input[type="text"] {
+border: 1px solid #ccc;
+border-radius: 4px;
+box-shadow: 0 0 5px #dadada inset;
+float: left;
+margin-bottom: 0;
+margin-top: 15px !important;
+padding: 10px;
+width: 100%;
+}
+.loginnow input[type="password"] {
+border: 1px solid #ccc;
+border-radius: 4px;
+box-shadow: 0 0 5px #dadada inset;
+float: left;
+margin-bottom: 0;
+margin-top: 15px !important;
+padding: 10px;
+width: 100%;
+}
+a:focus, a:hover {
+color: #23527c;
+text-decoration: underline;
+}
+.fb_login .btn.btn-primary.btn-lg {
+float: left;
+}
+.btn-group-lg>.btn, .btn-lg {
+padding: 10px 16px;
+font-size: 18px;
+line-height: 1.3333333;
+border-radius: 6px;
+}
+
+.modal-footer.fb_login > a {
+float: right !important;
+margin-top: 2px !important;
+}
+.modal-footer.fb_login img {
+width: 189px;
+}
+img {
+vertical-align: middle;
+}
+img {
+border: 0;
+}
+
+.forgott_password {
+  float: left;
+  font-size: 12px;
+  margin-bottom: -10px;
+  padding-right: 15px;
+  padding-top: 7px;
+  width: 100%;
+}
+
+#register.tab-pane.fade.active.in {
+  display: inline-block;
+  width: 100%;
+}
+
+
+.loginnow .btn.btn-primary.btn-lg {
+  background: none repeat scroll 0 0 #05174A;
+  border: medium none;
+}
+
+.loginnow  .btn.btn-primary.col-lg-12 {
+  margin-bottom: 0;
+  margin-top: 15px;
+  background: none repeat scroll 0 0 #05174A;
+}
+
+
+.loginnow  button.close {
+  background: none repeat scroll 0 0 transparent;
+  border: 0 none;
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  z-index: 10;
+}
+.forgotpassword .modal-body {
+  height: 250px;
+}
+.errorMessage {
+    color: red;
+}

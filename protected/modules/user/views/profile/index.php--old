@@ -1,0 +1,151 @@
+<?php
+/* @var $this ProfileController */
+/* @var $dataProvider CActiveDataProvider */
+
+//$this->breadcrumbs=array(
+//	'Users',
+//);
+//
+//$this->menu=array(
+//	array('label'=>'Create User', 'url'=>array('create')),
+//	array('label'=>'Manage User', 'url'=>array('admin')),
+//);
+?>
+<div class="innerbody control_gmap">
+
+
+<?php 
+//$this->widget('zii.widgets.CListView', array(
+//	'dataProvider'=>$dataProvider,
+//	'itemView'=>'_view',
+//)); 
+ echo "<pre>"; print_r($allNotification);
+
+
+?>
+    <div id="googleMap" style="width:100%;min-height:520px;"></div>
+</div>
+
+ <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+
+<script type="text/javascript">
+	var contentstring = [];
+	var regionlocation = [];
+	var markers = [];
+	var iterator = 0;
+	var areaiterator = 0;
+	var map;
+        var i=0;
+	var infowindow = [];
+	geocoder = new google.maps.Geocoder();
+	
+	$(document).ready(function () {
+		setTimeout(function() { initialize(); }, 400);
+	});
+	
+	function initialize() {           
+		infowindow = [];
+		markers = [];
+		GetValues();
+                
+		iterator = 0;
+		areaiterator = 0;
+              
+		region = new google.maps.LatLng(regionlocation[areaiterator].split(',')[0], regionlocation[areaiterator].split(',')[1]);
+		map = new google.maps.Map(document.getElementById("googleMap"), { 
+			zoom: 4,
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			center: region,
+		});
+		drop();
+	}
+	
+	function GetValues() {
+		
+//		
+//		contentstring[5] = "Visakhapatnam, Andhra Pradesh, india";
+//		regionlocation[5] = "17.686816, 83.218482";
+//                console.log(regionlocation);
+              
+                var jArray= <?php echo json_encode($allNotification ); ?>;
+                  
+                    for(var i=0; i<jArray.length ;i++){
+                    //alert(jArray[i]['id']);
+                    var latitude = jArray[i]['latitude']+','+jArray[i]['longitude'];
+                    //var longitude = jArray[i]['locationlongitude'];
+                    //var address =  GetAddress(jArray[i]['locationlatitude'], jArray[i]['locationlongitude']);
+                    //regionlocation =[];
+             
+                    regionlocation.push(latitude );
+                    //contentstring.push(address);
+                          
+                   //alert('lat ='+latitude + ', '+'long='+longitude);
+                   
+                }
+                
+                
+	}
+		   
+	function drop() {
+		for (var i = 0; i < regionlocation.length; i++) {
+			setTimeout(function() {
+				addMarker();
+                                
+			}, 800);
+		}
+	}
+
+	function addMarker() {
+		var address = regionlocation[areaiterator];
+     
+		var icons = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+		var templat = regionlocation[areaiterator].split(',')[0];
+		var templong = regionlocation[areaiterator].split(',')[1];
+		var temp_latLng = new google.maps.LatLng(templat, templong);
+		markers.push(new google.maps.Marker(
+		{
+			position: temp_latLng,
+			map: map,
+			icon: icons,
+			draggable: false
+		}));            
+		iterator++;
+		info(iterator);
+		areaiterator++;
+	}
+
+	function info(i) {
+		infowindow[i] = new google.maps.InfoWindow({
+			content: contentstring[i - 1]
+		});
+		infowindow[i].content = contentstring[i - 1];
+		google.maps.event.addListener(markers[i - 1], 'click', function() {
+			for (var j = 1; j < contentstring.length + 1; j++) {
+				infowindow[j].close();
+			}
+			infowindow[i].open(map, markers[i - 1]);
+		});
+	}
+        
+        
+        function GetAddress(latitude , longitude) {
+            var lat = latitude;
+            var lng = longitude;
+            var latlng = new google.maps.LatLng(lat, lng);
+            var geocoder = geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[1]) {
+                        return results[1].formatted_address;
+                       //alert("Location: " + results[1].formatted_address);
+                       //console.log(results[1].formatted_address);
+                    }
+                }
+            });
+            
+        }
+        
+        
+        
+        
+</script>

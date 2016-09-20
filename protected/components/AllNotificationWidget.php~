@@ -1,0 +1,33 @@
+class AllNotificationWidget extends CWidget
+{
+    public $login_id = Yii::app()->user->id;
+
+    public function run() {
+        
+     $sqlloc = "SELECT * From user_locations WHERE status=1 AND alert_notification = 1 AND user_id='$login_id'";
+                        $userlocation = Yii::app()->db->createCommand($sqlloc)->queryAll();
+                        
+                       $sql = "SELECT user.id as userid,user.alert_distance as distance, user.alert_days as days,wild_alert_posts.*,(((acos(sin((user_locations.latitude *pi()/180)) * sin((wild_alert_posts.latitude*pi()/180))+cos((user_locations.latitude *pi()/180)) * cos((wild_alert_posts.latitude*pi()/180)) * cos(((user_locations.longitude - wild_alert_posts.longitude)* pi()/180))))*180/pi())*60*1.1515 ) as distance,animals.*,threat_levels.id,threat_levels.level,threat_levels.color,categories.id,categories.category
+                                    FROM wild_alert_posts 
+                                    JOIN user_locations ON user_locations.user_id = wild_alert_posts.user_id 
+                                    JOIN user ON user.id = wild_alert_posts.user_id 
+                                    JOIN animals ON animals.id = wild_alert_posts.animal_id
+                                    join threat_levels ON threat_levels.id = animals.threat_level_id
+                                    JOIN categories ON categories.id = animals.category_id
+                                    WHERE wild_alert_posts.status = 1 
+                                    AND wild_alert_posts.modified_at >= DATE_SUB(CURDATE(), INTERVAL user.alert_days DAY) 
+                                    AND user_locations.alert_notification = 1 
+                                    AND user_locations.status = 1 
+                                    HAVING distance <= user.alert_distance
+                                ";
+                       
+                    $getallNotification = Yii::app()->db->createCommand($sql)->queryAll();
+        
+       
+
+        $this->render('_user', [
+            'data'=>$data,
+           
+        ]);
+    }
+}

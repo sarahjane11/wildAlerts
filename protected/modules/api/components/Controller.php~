@@ -1,0 +1,446 @@
+<?php
+
+/**
+ * Controller is the customized base controller class.
+ * All controller classes for this application should extend from this base class.
+ */
+class Controller extends CController {
+
+    /**
+     * @var string the default layout for the controller view. Defaults to '//layouts/column1',
+     * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
+     */
+    public $layout = '//layouts/column1';
+
+    /**
+     * @var array context menu items. This property will be assigned to {@link CMenu::items}.
+     */
+    public $menu = array();
+
+    /**
+     * @var array the breadcrumbs of the current page. The value of this property will
+     * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
+     * for more details on how to specify this property.
+     */
+    public $breadcrumbs = array();
+    public $AGE_FROM;
+    public $AGE_TO;
+    public $ALLOW_FREE_VIDEOCHAT;
+    public $MAX_FILE_UPLOAD;
+
+    public function init() {
+        $app = Yii::app();
+        if (isset($_POST['_lang'])) {
+            $app->language = $_POST['_lang'];
+            $app->session['_lang'] = $app->language;
+            $this->redirect(Yii::app()->request->urlReferrer);
+        } else if (isset($app->session['_lang'])) {
+            $app->language = $app->session['_lang'];
+        } else
+            $app->language = 'it';
+        
+        $globalSettings = (object) CHtml::listData(Settings::model()->findAll(), 'const_name', 'const_value');
+        $this->AGE_FROM = $globalSettings->AGE_FROM;
+        $this->AGE_TO = $globalSettings->AGE_TO;
+        $this->ALLOW_FREE_VIDEOCHAT = $globalSettings->ALLOW_FREE_VIDEOCHAT;
+        $this->MAX_FILE_UPLOAD = $globalSettings->MAX_FILE_UPLOAD;
+    }
+
+    /**
+     *
+     * Return age from date
+     */
+    public static function getAge($dob) {
+        $birthDate = date('m/d/Y', strtotime($dob));
+        $birthDate = explode("/", $birthDate);
+        return $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
+    }
+
+    public function getRegionProvinceOption($option, $data) {
+        if ($option == 1) {
+            return $data->region;
+        } else {
+            return $data->province;
+        }
+    }
+
+    public function getProfileImage($userId) {
+        $userimage = UserPhotos::model()->findByAttributes(array('login_id' => $userId, 'is_profile' => '1'));
+        if ($userimage) {
+            return $userimage->photo_name;
+        } else {
+            return;
+        }
+    }
+
+    public function getStatus($status) {
+
+        $array = array('Active / Email Not Verified', 'Block', 'Verified');
+
+        return $array[$status];
+    }
+
+    /**
+     * check and create user directory
+     */
+    public static function _checkDirectory($path, $id) {
+
+        if (!file_exists($path . '/user_' . $id)) {
+
+            $path = $path . '/user_' . $id;
+            //print_r($path);die;
+            if (mkdir($path, 0777)) {
+                return $path;
+            } else {
+
+                throw new CHttpException('403', 'Permission Denied - Resource Not available');
+            }
+        } else {
+            return $path . 'user_' . $id;
+        }
+    }
+
+    /**
+     * check and create sound directory
+     */
+    public static function _soundDirectory($path, $id) {
+
+
+        if (!file_exists($path . '/user_' . $id . '/sound')) {
+
+            $path = $path . '/user_' . $id . '/sound';
+            if (!mkdir($path, 0777)) {
+                return $path;
+            } else {
+
+                throw new CHttpException('403', 'Permission Denied - Resource Not available');
+            }
+        } else {
+            return $path . 'user_' . $id . '/sound';
+        }
+    }
+
+    /**
+     * Category Image Directory
+     * */
+    public static function _categoryDirectory($path, $id) {
+
+        //print_r($path);die;
+        if (!file_exists($path . '/user_' . $id . '/category')) {
+
+            $path = $path . '/user_' . $id . '/category';
+            if (!mkdir($path, 0777)) {
+                return $path;
+            } else {
+
+                throw new CHttpException('403', 'Permission Denied - Resource Not available');
+            }
+        } else {
+            return $path . 'user_' . $id . '/category';
+        }
+    }
+
+    /**
+     * check and create profile directory
+     */
+    public static function _profileDirectory($path) {
+        $profilepath = $path . '/profileimage';
+        if (!file_exists($profilepath)) {
+
+
+            if (mkdir($profilepath, 0777)) {
+                return $profilepath;
+            } else {
+
+                throw new CHttpException('403', 'Permission Denied - Resource Not available');
+            }
+        } else {
+            return $profilepath;
+        }
+    }
+
+    /**
+     * check and create gallery directory
+     */
+    public static function _galleryDirectory($path) {
+        $gallerypath = $path . '/galleryimages';
+        if (!file_exists($gallerypath)) {
+
+
+            if (mkdir($gallerypath, 0777)) {
+                return $gallerypath;
+            } else {
+                throw new CHttpException('403', 'Permission Denied - Resource Not available');
+            }
+        } else {
+
+            return $gallerypath;
+        }
+    }
+
+    /**
+     * check and create mailbox attachement directory
+     */
+    public static function _mailboxAttachmentDirectory($path) {
+        $mailboxattachmentpath = $path . '/mailboxattachment';
+        if (!file_exists($mailboxattachmentpath)) {
+
+
+            if (mkdir($mailboxattachmentpath, 0777)) {
+                return $mailboxattachmentpath;
+            } else {
+                throw new CHttpException('403', 'Permission Denied - Resource Not available');
+            }
+        } else {
+
+            return $mailboxattachmentpath;
+        }
+    }
+
+    public static function _videoDirectory($path) {
+        $videopath = $path . '/video/';
+        if (!file_exists($videopath)) {
+
+
+            if (mkdir($videopath, 0777)) {
+                return $videopath;
+            } else {
+                throw new CHttpException('403', 'Permission Denied - Resource Not available');
+            }
+        } else {
+
+            return $videopath;
+        }
+    }
+
+    public static function _letterAttachmentDirectory($path) {
+        $letterpath = $path . '/letterAttachment/';
+        if (!file_exists($letterpath)) {
+
+
+            if (mkdir($letterpath, 0777)) {
+                return $letterpath;
+            } else {
+                throw new CHttpException('403', 'Permission Denied - Resource Not available');
+            }
+        } else {
+
+            return $letterpath;
+        }
+    }
+
+    public function getGender($gender) {
+
+        $array = array('all' => 'All', 'Male' => 'Male', 'Female' => 'Female', 'is_transsexual_transvestite' => 'Transsexuals/Transvestites');
+
+        return $array[$gender];
+    }
+
+    public function setGender() {
+
+        $array = array('is_transsexual_transvestite' => 'Transsexuals/Transvestites', 'Male' => 'Male', 'Female' => 'Female', 'all' => 'All');
+
+        return $array;
+    }
+
+    public function setPreference() {
+        $array = array('all' => 'All', 'relationship' => 'Relationship', 'date' => 'Date', 'friends' => 'Friends', 'online friends' => 'Online friends', 'sex' => 'Sex', 'webcam sex' => 'Webcam sex', 'nothing' => 'Nothing');
+
+        return $array;
+    }
+
+    public function getPreference($preference) {
+        $array = array('all' => 'All', 'relationship' => 'Relationship', 'date' => 'Date', 'friends' => 'Friends', 'online friends' => 'Online friends', 'sex' => 'Sex', 'webcam sex' => 'Webcam sex', 'nothing' => 'Nothing');
+
+        return $array[$preference];
+    }
+
+    public function setBodytype() {
+        $array = array('thin' => 'Thin', 'slim' => 'Slim', 'normal' => 'Normal', 'a little too comfortable' => 'A little too comfortable', 'chubby' => 'Chubby', 'plump' => 'Plump', 'bear' => 'Bear', 'slightly mascular' => 'Slightly mascular', 'very mascular' => 'Very mascular', 'some mascular' => 'Very mascular');
+
+        return $array;
+    }
+
+    public function getBodytype($type) {
+        $array = array('thin' => 'Thin', 'slim' => 'Slim', 'normal' => 'Normal', 'a little too comfortable' => 'A little too comfortable', 'chubby' => 'Chubby', 'plump' => 'Plump', 'bear' => 'Bear', 'slightly mascular' => 'Slightly mascular', 'very mascular' => 'Very mascular', 'some mascular' => 'Very mascular');
+
+        return $array[$type];
+    }
+
+    public function setfilter() {
+        $array = array('online' => 'Show only users who are here now', 'personal picture' => 'only with personal picture', 'video profile' => 'only with video profile', 'gallery photos' => 'only with gallery photos');
+
+        return $array;
+    }
+
+    public function getfilter($type) {
+        $array = array('online' => 'Show only users who are here now', 'personal picture' => 'only with personal picture', 'video profile' => 'only with video profile', 'gallery photos' => 'only with gallery photos');
+
+        return $array[$type];
+    }
+
+    public function setCountries() {
+        $countries = Countries::model()->findAll();
+        if ($countries) {
+            return $countries;
+        } else {
+            return;
+        }
+    }
+
+    public function getGuests($id) {
+
+        $criteria = new CDbCriteria;
+        $criteria->select = 'DISTINCT(login_id),date_time';
+        $criteria->group = 'login_id';
+        $criteria->order = 'date_time DESC';
+        $criteria->condition = 'visitor_id = ' . $id;
+        $model = Visitors::model()->findAll($criteria);
+        //print_r($model);die;
+        return $model;
+    }
+
+    /**
+     * 
+     * @param type $filename
+     * @param type $newlocation
+     * @param type $originallocation
+     * @param type $angleinDegree
+     * @param type $effect
+     * @return type
+     */
+    public function getImageByangle($filename, $newlocation, $originallocation, $angleinDegree, $effect = 'effect') {
+        $image = new Easyphpthumbnail;
+        $image->Rotate = $angleinDegree;
+        $image->Keeptransparency = true;
+        $image->Thumblocation = $newlocation;
+        if (isset($effect)) {
+            switch ($effect) {
+                case 'GOLDEN' : $image->Ageimage = array(1, 10, 80);
+                    break;
+                case 'GRAY' : $image->Ageimage = array(1, 0, 0);
+                    break;
+                case 'MIRROR' : $image->Mirror = array(1, 10, 70, 40, 2);
+                    $image->Mirrorcolor = '#D0DEEE';
+                    break;
+                case 'ORIGINAL' : $image->Ageimage = array(255, 255, 255);
+                    break;
+            }
+        }
+
+        $image->Thumbfilename = 'image_' . $angleinDegree . $effect . '_' . $filename;
+        $image->Createthumb($originallocation . '/' . $filename, 'file');
+
+        return 'image_' . $angleinDegree . $effect . '_' . $filename;
+    }
+
+    /**
+     * 
+     * @param type $sourcefilename
+     * @param type $sourcelocation
+     * @param type $destinationlocation
+     * @param type $angle
+     * @param type $effect
+     * @param type $height
+     * @param type $width
+     * 
+     * 
+     * 
+     */
+    public function createTumbnails($sourcefilename, $sourcelocation, $destinationlocation, $angle = 0, $effect = 'ORIGINAL', $height, $width) {
+        $image = new Easyphpthumbnail;
+        $image->Rotate = $angle;
+        $image->Thumbheight = $height;
+        $image->Thumbwidth = $width;
+        $image->Keeptransparency = true;
+        $image->Percentage = true;
+        $image->Thumblocation = $destinationlocation . '/';
+        if (isset($effect)) {
+            switch ($effect) {
+                case 'GOLDEN' : $image->Ageimage = array(1, 10, 80);
+                    break;
+                case 'GRAY' : $image->Ageimage = array(1, 0, 0);
+                    break;
+                case 'MIRROR' : $image->Mirror = array(1, 10, 70, 40, 2);
+                    $image->Mirrorcolor = '#D0DEEE';
+                    break;
+                case 'ORIGINAL' : $image->Ageimage = array(255, 255, 255);
+                    break;
+            }
+        }
+
+        $image->Thumbfilename = $height . 'x' . $width . '_' . $sourcefilename;
+        $image->Createthumb($sourcelocation . '/' . $sourcefilename, 'file');
+    }
+
+    public function ageWiseText($age) {
+        $criteria = new CDbCriteria();
+        $criteria->select = "AVG(length(profile_text)) as profile_text_avg";
+        $criteria->condition = "TIMESTAMPDIFF(YEAR,birthday,CURDATE()) =" . $age;
+        $data1 = UserDetails::model()->findAll($criteria);
+        return $data1[0]->profile_text_avg;
+    }
+
+    public function ageWiseProfile($age) {
+
+        $criteria = new CDbCriteria();
+        $criteria->condition = "TIMESTAMPDIFF(YEAR,birthday,CURDATE()) =" . $age;
+        $total_profiles = UserDetails::model()->count($criteria);
+        return $total_profiles;
+    }
+
+    public function ageWiseProfileWithPhoto($age) {
+        $criteria = new CDbCriteria();
+        $criteria->condition = "is_profile = 1 AND TIMESTAMPDIFF(YEAR,birthday,CURDATE()) =" . $age;
+        $profile_with_photo = UserDetails::model()->with('userPhotos')->count($criteria);
+        return $profile_with_photo;
+    }
+
+    public function ageWiseOnline($age) {
+        $criteria = new CDbCriteria();
+        $criteria->condition = "online_status = 1 AND TIMESTAMPDIFF(YEAR,birthday,CURDATE()) =" . $age;
+        $online_profiles = UserSiteInfo::model()->with('UserDetails')->count($criteria);
+        return $online_profiles;
+    }
+
+    public function ageWiseOffline($age) {
+        $criteria = new CDbCriteria();
+        $criteria->condition = "TIMESTAMPDIFF(YEAR,birthday,CURDATE()) =" . $age;
+        $total_profiles = UserDetails::model()->count($criteria);
+        $criteria1 = new CDbCriteria();
+        $criteria1->condition = "online_status = 1 AND TIMESTAMPDIFF(YEAR,birthday,CURDATE()) =" . $age;
+        $online_profiles = UserSiteInfo::model()->with('UserDetails')->count($criteria1);
+        $offline_profiles = $total_profiles - $online_profiles;
+        return $offline_profiles;
+    }
+
+    public function ageWiseAway($age) {
+        $time = time();
+        $time_check = $time;
+        $criteria = new CDbCriteria;
+        $criteria->condition = $time_check . ' - UNIX_TIMESTAMP(last_visited) > 600  AND online_status = 1 AND TIMESTAMPDIFF(YEAR,birthday,CURDATE()) =' . $age;
+        $agewise_away_profiles = UserSiteInfo::model()->with('UserDetails')->count($criteria);
+        return $agewise_away_profiles;
+    }
+
+    public function checkInterested($id = NULL, $array = array()) {
+        //echo "<pre>"; print_r($array); die;
+        if (!empty($id) && !empty($array)) {
+            foreach ($array as $data) {
+                if (array_search($id, $data->attributes) == 'interested_by') {
+                    return true;
+                    break;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function getAgeList() {
+        $list = array();
+        for ($i = $this->AGE_FROM; $i <= $this->AGE_TO; $i++)
+            $list[$i] = $i;
+        return $list;
+    }
+
+}

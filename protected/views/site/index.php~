@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Wild Alerts</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    
+</head>
+
+<body>
+
+
+<!--header start-->
+<header>
+<div class="container">
+
+<a href="#"><img src="img/top-menu-img.png" alt="" title="" /></a>
+<a href="#"><img src="img/appstore-icn-small.png" alt="" title="" /></a>
+<button>Login</button>
+</div>
+</header>
+<!--header end-->
+
+<section>
+<div class="container">
+<div class="col-lg-5 col-md-5 col-sm-5 left-sectn">
+<div class="logo"><a href="#"><img src="<?php echo Yii::app()->theme->baseUrl;?>img/logo.png" alt="" title="" /></a></div>
+<img class="lft-bear-img" src="<?php echo Yii::app()->theme->baseUrl;?>img/bear-pic-lft.png" alt="" />
+
+<div class="lft-data">
+<p>wildAlerts shares the latest information about animals who venture into town or spend time near hiking trails and campgrounds. </p>
+<ul>
+<li><span></span> Get alerts from wildAlerts.</li>
+<li><span></span> Add animal sightings so your neighbors will be aware.</li>
+<li><span></span> Add several locations (home, work, schools, hiking trail)</li>
+<li><span></span> See recent activity in the area</li>
+</ul>
+
+<img class="appstore-icn-big" src="<?php echo Yii::app()->theme->baseUrl;?>img/appstore-icn-big.png" alt="" title="" />
+</div>
+
+</div>
+
+
+<div class="col-lg-7 col-md-7 col-sm-7 right-sectn">
+<img class="right-device-big-img" src="<?php echo Yii::app()->theme->baseUrl;?>img/mobile-device-pic-right.png" alt="" title="" />
+</div>
+
+</div>
+</section>
+<!--complete content end-->
+
+<footer>
+<div class="container">
+<div class="login-signup">
+<a href="#" class="login-btn">Login</a>
+<a href="#" class="signup-btn">Sign up</a>
+</div>
+
+
+<div class="footer-copyright">© 2015 WildAlerts.com</div>
+<div class="footer-nav">
+<ul>
+<li><a href="#">About us</a></li>
+<li><a href="#">Support</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Press</a></li>
+<li><a href="#">Jobs</a></li>
+<li><a href="#">Privacy</a></li>
+<li><a href="#">Terms</a></li>
+</ul>
+</div>
+</div>
+</footer>
+
+
+
+<script src="<?php echo Yii::app()->theme->baseUrl;?>/js/jquery.js"></script>
+<script src="<?php echo Yii::app()->theme->baseUrl;?>/js/bootstrap.js"></script>
+
+
+
+</body>
+</html>

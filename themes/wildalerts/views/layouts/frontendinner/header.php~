@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<title>Wild Alerts</title>
+
+    <link href="<?php echo Yii::app()->theme->baseUrl;?>/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo Yii::app()->theme->baseUrl;?>/css/style.css" rel="stylesheet">
+    
+    
+        <!--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgf4FzsTWah_eYb0Eix9OKQ0lFFZXfTLI&sensor=false&libraries=places"></script>-->
+     <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgf4FzsTWah_eYb0Eix9OKQ0lFFZXfTLI&libraries=places&callback=initAutocomplete"></script>-->
+       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgf4FzsTWah_eYb0Eix9OKQ0lFFZXfTLI&signed_in=true&libraries=places&callback=initMap"
+        async defer></script>
+
+</head>
+
+<body class="innerbody">
+
+
+<!--header start-->
+<header>
+<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+
+<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="<?php echo Yii::app()->createUrl("/user/profile"); ?>" class="navbar-brand"><img src="<?php echo Yii::app()->theme->baseUrl;?>/img/logo.png"/></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="<?php echo Yii::app()->createUrl("/user/profile"); ?>">Home</a></li>
+            
+            
+             <li class="dropdown notificationns">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="glyphicon glyphicon-bell"></i> 
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts pull-right">
+                        <?php $this->widget('AllNotificationWidget'); ?>
+                      
+
+                       
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+            
+            
+            
+            
+            
+            
+            
+            <li class="dropdown">
+                
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#">Dropdown <i class="fa fa-caret-down"></i><b class="caret"></b></a>
+              <ul class="dropdown-menu pull-right">
+              
+                <li><a href="<?php echo Yii::app()->createUrl('/user/accountsetting/profile');?>">Account settings</a></li>
+                
+                
+                <!--<li><a href="<?php //echo Yii::app()->createUrl('/user/notificationsettings');?>">Notification setting</a></li>-->
+                <li><a href="<?php echo Yii::app()->createUrl('/site/logout');?>">logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+</header>
+<div class="row row-offcanvas row-offcanvas-left">
+<!--header end-->
+
+
+

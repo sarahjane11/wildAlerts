@@ -1,0 +1,105 @@
+<?php
+/* @var $this NotificationsettingsController */
+/* @var $dataProvider CActiveDataProvider */
+
+$this->breadcrumbs=array(
+	'User Notification',
+);
+
+$this->menu=array(
+	array('label'=>'Create UserLocations', 'url'=>array('create')),
+	array('label'=>'Manage UserLocations', 'url'=>array('admin')),
+);
+?>
+<div class="container">
+<h1>User Notification</h1>
+
+<?php //echo "<pre>"; print_r($all_user_location); echo "</pre>";
+ //$this->widget('zii.widgets.CListView', array('dataProvider'=>$dataProvider,	'itemView'=>'_view',)); 
+
+
+?>
+<table>
+	<tr>
+		<th>Location Name</th>
+		<th>Alert Notification</th>
+	</tr>
+	<?php 
+    foreach ($all_user_location as $all_user_location1) {  ?>
+    <tr id="tr_<?php echo $all_user_location1->id;?>">
+		<td><?php echo $all_user_location1->location_type; ?></td>
+		<td><?php 
+		if($all_user_location1->alert_notification==1) 
+		{
+		   echo "<input type='button' value='Yes' id='".$all_user_location1->id."' class='change_alert_notification' >"; 
+		}else{ 
+			echo "<input type='button' value='No' id='".$all_user_location1->id."' class='change_alert_notification no-btn' >"; 
+		}
+				?></td>
+	</tr>
+   <?php 
+
+    }
+
+	?>
+
+</table>
+</div>
+<?php $url =Yii::app()->baseUrl."/user/notificationsettings/changestatus/?require=partialview";
+Yii::app()->clientScript->registerScript('change_alert_notification', "
+jQuery(document).on('click', '.change_alert_notification', function(e){ 
+var id = $(this).attr('id');
+var status = $(this).val(); //alert(id+status);
+var status_new ='';
+if(status=='Yes')
+{
+  status_new=0;
+}else if(status=='No'){
+	status_new=1;
+}
+  jQuery.ajax({
+    'type' : 'POST',
+    'url' : '".$url."',
+    'data' : {
+      'id' : id,'status':status_new
+    },
+    beforeSend: function() {
+        //Loading.show();
+    },
+    'success' : function(response){
+    	var response_data = JSON.parse(response); 
+         if(response_data.status==1)
+         { 
+           
+            jQuery('#tr_'+id+' .change_alert_notification').removeClass('no-btn').addClass('no-btn1');
+            jQuery('#tr_'+id+' .change_alert_notification').val('Yes');
+         }else{
+         	jQuery('#tr_'+id+' .change_alert_notification').removeClass('no-btn1').addClass('no-btn');
+         	jQuery('#tr_'+id+' .change_alert_notification').val('No');
+         }
+        //Loading.hide();
+    }
+  });
+  return false;
+});
+")
+
+
+?>
+
+
+<style>
+table {
+  float: left;
+  width: 40%;
+}
+
+tr {
+  margin: 0 0 15px;
+  width: 100%;
+}
+tr input{ padding:4px 12px; background: #337ab7; border:none; color:#fff; margin: 9px 0px;}
+tr input.no-btn{ background: #d43f3a;}
+
+
+</style>
